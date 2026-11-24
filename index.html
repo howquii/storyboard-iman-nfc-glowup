@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storyboard · Imán NFC</title>
+<style>
+  :root{
+    --bg:#f3f1ec; --card:#ffffff; --ink:#15251c; --muted:#5f6b63; --line:#ddd9cf;
+    --green:#1a4a2e; --lime:#c6f25a; --pink:#ff3d7f; --cyan:#2fd3e0; --orange:#ff7a1a; --violet:#7a3cff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,"Helvetica Neue",Arial,sans-serif}
+  header{padding:40px 24px 8px;max-width:1280px;margin:0 auto}
+  h1{font-size:38px;line-height:1.05;margin:0 0 10px;letter-spacing:-.02em}
+  header p{margin:0;color:var(--muted);max-width:72ch}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
+  .meta li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+  main{max-width:1280px;margin:0 auto;padding:8px 24px 72px}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;margin:44px 0 4px;display:flex;align-items:center;gap:10px}
+  h2 i{width:14px;height:14px;border-radius:4px;display:inline-block}
+  .sub{color:var(--muted);margin:0 0 18px;font-size:15px;max-width:80ch}
+
+  /* Paleta de luz */
+  .palette{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .sw{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .sw div{height:56px}
+  .sw p{margin:0;padding:10px 12px;font-size:13.5px}
+  .sw b{display:block;font-size:14px}
+
+  /* Plano */
+  .shot{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.5fr);margin-bottom:18px}
+  .col{position:relative;border-right:1px solid var(--line);background:#efede7;min-height:260px}
+  .col:last-child{border-right:0;background:var(--card)}
+  .col img.fill{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
+  .tag{position:absolute;left:10px;bottom:10px;background:rgba(21,37,28,.85);color:#fff;font-size:11.5px;
+    border-radius:6px;padding:2px 8px;text-transform:uppercase;letter-spacing:.05em}
+  .gen{display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;color:var(--muted);font-size:13px;
+    background:repeating-linear-gradient(135deg,#ece9e1 0 14px,#e6e3da 14px 28px)}
+  .gen span{background:var(--card);border:1px dashed #a9a596;border-radius:10px;padding:10px 12px}
+  .gen.has{padding:0;background:#111}
+  .gen.has .tag{background:rgba(21,37,28,.85);color:#fff;border:0;border-radius:6px;padding:2px 8px}
+  .gen.has img{width:100%;height:100%;object-fit:cover;display:block}
+  .txt{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px}
+  .head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .num{background:var(--ink);color:#fff;font-weight:700;font-size:14px;border-radius:8px;padding:3px 10px}
+  .dur{background:var(--lime);color:var(--ink);font-weight:700;font-size:13px;border-radius:8px;padding:3px 9px}
+  .txt h3{margin:0;font-size:19px;line-height:1.2}
+  dl{margin:0;display:grid;grid-template-columns:82px 1fr;gap:6px 10px;font-size:14.5px}
+  dt{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:2px}
+  dd{margin:0}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:2px 10px 2px 4px}
+  .chip i{width:14px;height:14px;border-radius:50%;display:inline-block}
+  .txt a{color:var(--ink);text-decoration-color:var(--pink);text-underline-offset:3px}
+  .refs{display:flex;gap:8px;flex-wrap:wrap}
+  .refs figure{margin:0;width:132px}
+  .refs img{width:132px;height:78px;object-fit:cover;border-radius:8px;display:block;border:1px solid var(--line)}
+  .refs figcaption{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.3}
+.wa{display:inline-block;background:#f2b705;color:#15251c;font-weight:700;font-size:11.5px;border-radius:6px;padding:1px 8px;vertical-align:middle;letter-spacing:.02em}
+  .rules{margin:0 0 6px;padding-left:20px;max-width:80ch}.rules li{margin:4px 0}
+  .warn{background:#fff4e5;border:1px solid #f3d39c;border-radius:10px;padding:8px 12px;font-size:13.5px}
+  .a1 .num{background:#1f7f8c} .a2 .num{background:var(--pink)} .a3 .num{background:var(--violet)}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;height:100%;min-height:260px;background:var(--ink)}
+  .split div{display:flex;align-items:flex-end;padding:8px;font-size:12px;font-weight:700;color:#fff}
+
+  .notes{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin-top:44px}
+  .notes h2{margin-top:0}
+  .notes li{margin:6px 0}
+  .strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:12px}
+  .strip figure{margin:0}
+  .strip img{width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+  .strip figcaption{font-size:12px;color:var(--muted);margin-top:4px}
+  .lucia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:14px}
+  .lucia img{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
+
+  @media (max-width:900px){
+    .shot{grid-template-columns:1fr 1fr}
+    .col:nth-child(2){border-right:0}
+    .col:last-child{grid-column:1 / -1;border-top:1px solid var(--line)}
+    .lucia{grid-template-columns:1fr}
+  }
+  @media (max-width:520px){h1{font-size:28px} header,main{padding-left:16px;padding-right:16px} dl{grid-template-columns:1fr} .refs figure,.refs img{width:110px}}
+  @media print{body{background:#fff}.shot{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <h1>«El imán que se queda»</h1>
+  <p>Comercial del imán NFC con el demo de Glow Up Protein Bar. Lucía demuestra el producto como clienta; el cierre le habla al dueño de negocio que quiere sus propios imanes. Basado en los bocetos del cuaderno, con técnicas de cámara de EyeCannndy, encuadres de Frameset y una luz pop que pasa de fría a color cuando entra el imán.</p>
+  <ul class="meta">
+    <li><b>Formato:</b> vertical 9:16</li>
+    <li><b>Duración:</b> ~30 s · 11 planos</li>
+    <li><b>Protagonista:</b> Lucía</li>
+    <li><b>Demo:</b> Glow Up (aprobado)</li>
+    <li><b>Pedido:</b> batido de fresa + waffles proteicos</li>
+    <li><b>Audio:</b> solo SFX generado con IA, sin voz en off</li>
+    <li><b>Versión:</b> v03 · 24-nov-2026</li>
+  </ul>
+</header>
+
+<main>
+
+<h2><i style="background:var(--ink)"></i>Personaje · Lucía</h2>
+<p class="sub">Clienta frecuente de Glow Up, unos 26 años. Polo holgado verde oliva, jean ancho celeste, zapatillas mostaza. La hoja de personaje se adjunta en cada generación para mantener el mismo rostro y la misma ropa.</p>
+<div class="lucia">
+  <img src="personaje/lucia_v01_original.png" alt="Lucía sentada en el piso de un estudio con fondo crema, celular en mano">
+  <img src="personaje/lucia_hoja-personaje_v01.png" alt="Hoja de personaje de Lucía con vistas de cuerpo entero y detalles">
+</div>
+
+<h2><i style="background:linear-gradient(90deg,var(--cyan),var(--pink),var(--lime))"></i>Concepto de luz pop</h2>
+<p class="sub">La luz cuenta la historia. Antes del imán todo es frío y apagado; con el toque NFC el color «se enciende» y desde ahí la pieza vive en rosa fresa y lima, los colores del batido y de Glow Up. Luz dura con sombras marcadas, gelatinas saturadas y fondos de color plano, nada de luz difusa de comercial genérico.</p>
+<div class="palette">
+  <div class="sw"><div style="background:var(--cyan)"></div><p><b>Cian refri</b>Acto 1. Luz del interior del refrigerador y cocina de noche: frustración.</p></div>
+  <div class="sw"><div style="background:var(--pink)"></div><p><b>Rosa fresa</b>Desde el toque NFC. Contraluces y rebotes; el color del batido.</p></div>
+  <div class="sw"><div style="background:var(--lime)"></div><p><b>Lima</b>Acento de acción: destello del NFC, timbre, botón «Enviar orden».</p></div>
+  <div class="sw"><div style="background:var(--green)"></div><p><b>Verde Glow Up</b>Fondos y utilería de la marca: bolsa, imán, placa final.</p></div>
+  <div class="sw"><div style="background:var(--orange)"></div><p><b>Naranja / violeta</b>Colores propios del gas y la heladería en la pantalla dividida.</p></div>
+</div>
+
+<h2><i style="background:#f2b705"></i>Composición estilo Wes Anderson</h2>
+<p class="sub">Los planos de apoyo (los que ubican a Lucía en su casa y en su mundo) van con composición planimétrica: cámara frontal, a 90° de la pared, sujeto al centro y simetría casi perfecta. Contrasta con los planos de acción (toque NFC, ojo de pez, zoom), que van rápidos y deformados. Los planos con esta regla llevan la etiqueta <span class="wa">Wes Anderson</span>.</p>
+<ul class="rules">
+  <li><b>Frontal y centrado:</b> el sujeto en el eje vertical del cuadro, la cámara paralela a la pared del fondo.</li>
+  <li><b>Fondos de color plano:</b> paredes y muebles en bloques de color (mostaza, rosa fresa, verde Glow Up), sin texturas que distraigan.</li>
+  <li><b>Utilería en espejo:</b> lámparas, plantas o cuadros iguales a cada lado del sujeto.</li>
+  <li><b>Movimientos de cámara Wes Anderson</b> (nada de cámara en mano):
+    <ul>
+      <li><a href="https://eyecannndy.com/technique/whip-pan" target="_blank" rel="noopener">Whip pan</a> de 90°: barrido seco de un punto a otro sin cortar (puerta → sala).</li>
+      <li><a href="https://eyecannndy.com/technique/trucking" target="_blank" rel="noopener">Trucking</a> lateral: la cámara se desliza de lado, paralela a la pared, siguiendo a Lucía.</li>
+      <li><a href="https://eyecannndy.com/technique/dolly-shot" target="_blank" rel="noopener">Dolly</a> recto: empujes y alejamientos lentos en el eje central.</li>
+      <li><a href="https://eyecannndy.com/technique/zoom-in" target="_blank" rel="noopener">Snap zoom</a>: zoom de golpe para remates cómicos (el timbre).</li>
+      <li><a href="https://eyecannndy.com/technique/overhead" target="_blank" rel="noopener">Overhead</a> cenital: insertos desde arriba de objetos ordenados en la mesa o el piso.</li>
+      <li><a href="https://eyecannndy.com/technique/tilt" target="_blank" rel="noopener">Tilt</a> recto: subir o bajar la cámara sin moverla de su eje.</li>
+    </ul></li>
+</ul>
+<div class="refs" style="margin-top:12px">
+  <figure><img src="refs/w01_sofa-amarillo-centro.jpg" alt=""><figcaption>Sofá amarillo, sujeto al centro</figcaption></figure>
+      <figure><img src="refs/w08_cocina-naranja-centro.jpg" alt=""><figcaption>Cocina frontal, sujeto al centro</figcaption></figure>
+      <figure><img src="refs/w04_fachada-simetrica.jpg" alt=""><figcaption>Fachada simétrica</figcaption></figure>
+      <figure><img src="refs/w10_cuarto-azul-simetrico.jpg" alt=""><figcaption>Cuarto de color plano</figcaption></figure>
+      <figure><img src="refs/m01_whip-pan-wes.jpg" alt=""><figcaption>EyeCannndy · Whip Pan</figcaption></figure>
+      <figure><img src="refs/m02_trucking-lateral.jpg" alt=""><figcaption>EyeCannndy · Trucking</figcaption></figure>
+      <figure><img src="refs/m03_overhead-rosa.jpg" alt=""><figcaption>EyeCannndy · Overhead</figcaption></figure>
+      </div>
+
+<!-- ============ ACTO 1 ============ -->
+<h2><i style="background:#1f7f8c"></i>Acto 1 · El hambre (7 s)</h2>
+<p class="sub">Cocina de noche, todo en cian. Se entiende sin audio.</p>
+
+<article class="shot a1">
+  <div class="col"><img class="fill" src="bocetos/b01.jpg" alt="Boceto: se abre la refrigeradora y solo hay una manzana"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="01"><span>Cuadro generado<br><code>cuadros/01.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">1</b><b class="dur">2 s</b><h3>Oscuridad total: se abre la refri y solo hay una manzana</h3></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/as-object" target="_blank" rel="noopener">Object POV</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Empieza en negro total: estamos dentro del refri cerrado. Se abre la puerta, entra la luz y aparece Lucía de golpe, muy cerca e inclinada hacia adentro, buscando. Lo único que ve es una manzana mordida y oxidada en primer plano.</dd>
+      <dt>Cámara</dt><dd>POV desde dentro del refrigerador, cámara fija en la repisa, gran angular 16 mm. No se ve la puerta abierta ni a Lucía de cuerpo entero: solo su cara y hombros inclinados, llenando el hueco del refri, con la manzana en primer plano.</dd>
+      <dt>Luz</dt><dd>Negro total al inicio. Al abrir, el LED cian del refri se enciende y es la única fuente: le pega en la cara a Lucía; detrás de ella, la cocina casi negra.</dd>
+      <dt>SFX</dt><dd>Zumbido del refri, succión del sello de la puerta al abrir.</dd>
+    </dl>
+    <div class="chips"><span class="chip"><i style="background:var(--cyan)"></i>Cian refri</span></div>
+    <div class="refs">
+      <figure><img src="refs/e01_object-pov.jpg" alt=""><figcaption>EyeCannndy · Object POV</figcaption></figure>
+      <figure><img src="refs/r01_refri-pov-azul.jpg" alt=""><figcaption>POV dentro del refri, luz azul</figcaption></figure>
+      <figure><img src="refs/r02_pop-cocina-teal.jpg" alt=""><figcaption>Cocina teal saturada</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a1">
+  <div class="col"><img class="fill" src="bocetos/b02.jpg" alt="Boceto: Lucía mira la manzana decepcionada y molesta"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="02"><span>Cuadro generado<br><code>cuadros/02.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">2</b><b class="dur">2 s</b><h3>Lucía mira la manzana, decepcionada y molesta</h3> <span class="wa">Wes Anderson</span></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/as-object" target="_blank" rel="noopener">Object POV</a> · <a href="https://eyecannndy.com/technique/dolly-shot" target="_blank" rel="noopener">Dolly</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Ella se inclina, mira la manzana y frunce el ceño. Suspiro.</dd>
+      <dt>Cámara</dt><dd>Mismo POV desde dentro, 35 mm, frontal y centrado: las repisas del refri enmarcan a Lucía en simetría, como un cuadro dentro del cuadro. Empuje recto y lento hacia su cara; la manzana queda fuera de foco en primer plano.</dd>
+      <dt>Luz</dt><dd>El cian del refri le pega de frente como luz principal. Contraluz magenta suave en el pelo desde la cocina.</dd>
+      <dt>SFX</dt><dd>Golpe seco de comedia y un suspiro.</dd>
+    </dl>
+    <div class="chips"><span class="chip"><i style="background:var(--cyan)"></i>Cian refri</span><span class="chip"><i style="background:var(--pink)"></i>Rim magenta</span></div>
+    <div class="refs">
+      <figure><img src="refs/w09_cocina-rosa-refri.jpg" alt=""><figcaption>Wes Anderson · cocina y refri</figcaption></figure>
+      <figure><img src="refs/e02_dolly-push-in.jpg" alt=""><figcaption>EyeCannndy · Dolly (push-in)</figcaption></figure>
+      <figure><img src="refs/r01_refri-pov-azul.jpg" alt=""><figcaption>Cara iluminada por el refri</figcaption></figure>
+      <figure><img src="refs/r02b_pop-neon-rosa.jpg" alt=""><figcaption>Rim rosa / neón en el pelo</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a1">
+  <div class="col"><img class="fill" src="bocetos/b03.jpg" alt="Boceto: cierra la puerta fuerte y se caen los imanes menos el de NFC"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="03"><span>Cuadro generado<br><code>cuadros/03.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">3</b><b class="dur">3 s</b><h3>Portazo: caen todos los imanes menos el NFC</h3> <span class="wa">Wes Anderson</span></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/zoom-in" target="_blank" rel="noopener">Zoom in</a> · <a href="https://eyecannndy.com/technique/slow-motion" target="_blank" rel="noopener">Slow Motion</a> · <a href="https://eyecannndy.com/technique/falling" target="_blank" rel="noopener">Falling</a> · <a href="https://eyecannndy.com/technique/hard-light" target="_blank" rel="noopener">Hard Light</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Lucía cierra con fuerza. Los imanes de colores caen al piso; el de Glow Up, del mismo tamaño que los demás y perdido entre ellos, es el único que no se mueve.</dd>
+      <dt>Cámara</dt><dd>Abre con un plano frontal y simétrico de la cocina: el refri al centro, Lucía delante, todo en espejo. Portazo y corte a la puerta en plano abierto, 50 mm, 120 fps en la caída: el imán de Glow Up se ve pequeño, igual que los otros. Cuando los demás terminan de caer, zoom in recto hasta que el imán, solo al centro, llena el cuadro. Remata con un inserto cenital (overhead) de los imanes desparramados en el piso, ordenados como un catálogo.</dd>
+      <dt>Luz</dt><dd>Luz dura lateral, sombras marcadas de cada imán sobre la puerta. Todavía fría, cian.</dd>
+      <dt>SFX</dt><dd>Portazo, imanes rebotando en el piso, luego silencio total.</dd>
+    </dl>
+    <div class="chips"><span class="chip"><i style="background:var(--cyan)"></i>Cian</span><span class="chip"><i style="background:#999"></i>Luz dura</span></div>
+    <div class="refs">
+      <figure><img src="refs/m03b_overhead-cama.jpg" alt=""><figcaption>EyeCannndy · Overhead</figcaption></figure>
+      <figure><img src="refs/w07_cocina-refri-rosa.jpg" alt=""><figcaption>Wes Anderson · refri al centro</figcaption></figure>
+      <figure><img src="refs/e03_slow-motion.jpg" alt=""><figcaption>EyeCannndy · Slow Motion</figcaption></figure>
+      <figure><img src="refs/r03_imanes-color.jpg" alt=""><figcaption>Puerta con imanes de color</figcaption></figure>
+      <figure><img src="refs/r03b_imanes-sonrisa.jpg" alt=""><figcaption>Detalle de imanes</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<!-- ============ ACTO 2 ============ -->
+<h2><i style="background:var(--pink)"></i>Acto 2 · El toque (13 s)</h2>
+<p class="sub">Con el ¡pum! del NFC la luz cambia a rosa y lima, y el ritmo se acelera. Lucía se registra en segundos y el menú ya la saluda por su nombre. Las pantallas son las reales de Glow Up.</p>
+
+<article class="shot a2">
+  <div class="col"><img class="fill" src="bocetos/b04.jpg" alt="Boceto: el celular se acerca al imán"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="04"><span>Cuadro generado<br><code>cuadros/04.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">4</b><b class="dur">1,5 s</b><h3>Agarra el celular y ¡pum!: NFC</h3></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/speed-ramping" target="_blank" rel="noopener">Speed Ramp</a> · <a href="https://eyecannndy.com/technique/whip-pan" target="_blank" rel="noopener">Whip Pan</a> · <a href="https://eyecannndy.com/technique/light-flash" target="_blank" rel="noopener">Light Flash</a> · <a href="https://eyecannndy.com/technique/color-shift" target="_blank" rel="noopener">Color Shift</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Movimiento muy rápido: saca el celular, lo pega al sello NFC del imán. Vibra.</dd>
+      <dt>Cámara</dt><dd>Macro 100 mm sobre el imán. La mano entra con barrido (whip). Rampa de velocidad: rápido, se frena justo en el toque, rápido otra vez.</dd>
+      <dt>Luz</dt><dd>En el toque, destello lima y cambio de gelatina: el cian se vuelve rosa fresa. Es el momento en que el comercial «se enciende».</dd>
+      <dt>SFX</dt><dd>Whoosh del brazo + «pum» con brillo y vibración del celular.</dd>
+    </dl>
+    <div class="chips"><span class="chip"><i style="background:var(--lime)"></i>Destello lima</span><span class="chip"><i style="background:var(--pink)"></i>Rosa fresa</span></div>
+    <div class="refs">
+      <figure><img src="refs/e04_speed-ramp.jpg" alt=""><figcaption>EyeCannndy · Speed Ramp</figcaption></figure>
+      <figure><img src="refs/e04b_light-flash.jpg" alt=""><figcaption>EyeCannndy · Light Flash</figcaption></figure>
+      <figure><img src="refs/e04c_color-shift.jpg" alt=""><figcaption>EyeCannndy · Color Shift</figcaption></figure>
+      <figure><img src="refs/r04_mano-celular.jpg" alt=""><figcaption>Mano con celular, macro</figcaption></figure>
+      <figure><img src="refs/r04b_celular-bokeh.jpg" alt=""><figcaption>Celular con bokeh de color</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a2">
+  <div class="col"><img class="fill" src="bocetos/b05.jpg" alt="Boceto: cambio de lente, ojo de pez usando la app"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="05"><span>Cuadro generado<br><code>cuadros/05.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">5</b><b class="dur">4 s</b><h3>Cambio de lente: POV del celular en trapecio</h3></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/first-person-pov" target="_blank" rel="noopener">First-Person</a> · <a href="https://eyecannndy.com/technique/ultra-wide-zero-d" target="_blank" rel="noopener">Ultra Wide</a> · <a href="https://eyecannndy.com/technique/as-object" target="_blank" rel="noopener">Screen POV</a> · <a href="https://eyecannndy.com/technique/digital-overlay" target="_blank" rel="noopener">Floating UI</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>No aparece la cara de Lucía: es lo que ella ve. Usa la app con los pulgares, todo muy rápido: pone sus datos (nombre, dirección, «Todo listo, Lucia»), aparece «Hola, Lucia», elige batido de fresa y waffles proteicos y toca «Enviar orden».</dd>
+      <dt>Cámara</dt><dd>POV en primera persona, ultra gran angular rectilíneo (14 mm) pegado al celular: se deforma en trapecio y los pulgares se ven gigantes. Imagen a cuadro completo, sin el círculo ni los bordes negros del ojo de pez. Las pantallas reales se montan en edición.</dd>
+      <dt>Luz</dt><dd>Brillo de la pantalla en los dedos; reflejos rosa fresa y lima en los bordes del celular.</dd>
+      <dt>SFX</dt><dd>Toques de pantalla en ritmo, «swoosh» del carrusel, campanita de «Pedido recibido».</dd>
+    </dl>
+    <div class="chips"><span class="chip"><i style="background:var(--pink)"></i>Rosa fresa</span><span class="chip"><i style="background:var(--lime)"></i>Lima</span></div>
+    <div class="refs">
+      <figure><img src="refs/e05_fisheye.jpg" alt=""><figcaption>EyeCannndy · Fisheye</figcaption></figure>
+      <figure><img src="refs/e05b_screen-pov.jpg" alt=""><figcaption>EyeCannndy · Screen POV</figcaption></figure>
+      <figure><img src="refs/r05_ojo-de-pez-mujer.jpg" alt=""><figcaption>Ojo de pez, rostro cercano</figcaption></figure>
+      <figure><img src="refs/r05b_ojo-de-pez-hombre.jpg" alt=""><figcaption>Ojo de pez con viñeta</figcaption></figure>
+      <figure><img src="capturas/02_nombre.jpg" alt=""><figcaption>Pantalla real: nombre</figcaption></figure>
+      <figure><img src="capturas/04_direccion.jpg" alt=""><figcaption>Pantalla real: dirección</figcaption></figure>
+      <figure><img src="capturas/05_resumen.jpg" alt=""><figcaption>Pantalla real: todo listo</figcaption></figure>
+      <figure><img src="capturas/06_menu.jpg" alt=""><figcaption>Pantalla real: menú</figcaption></figure>
+      <figure><img src="capturas/08_mi-pedido.jpg" alt=""><figcaption>Pantalla real: mi pedido</figcaption></figure>
+      <figure><img src="capturas/09_pedido-recibido.jpg" alt=""><figcaption>Pantalla real: recibido</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a2">
+  <div class="col"><img class="fill" src="bocetos/b06.jpg" alt="Boceto: ding dong, primer plano de su cara"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="06"><span>Cuadro generado<br><code>cuadros/06.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">6</b><b class="dur">1,5 s</b><h3>¡Ding dong!</h3></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/zoom-in" target="_blank" rel="noopener">Crash Zoom</a> · <a href="https://eyecannndy.com/technique/close-up" target="_blank" rel="noopener">Close-Up</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Todavía con el celular en la mano, suena el timbre. Abre los ojos, sorprendida; la puerta al fondo.</dd>
+      <dt>Cámara</dt><dd>Plano frontal centrado de Lucía en la cocina y, al sonar el timbre, snap zoom a la Wes Anderson hasta sus ojos. Luego whip pan de 90° hacia la puerta.</dd>
+      <dt>Luz</dt><dd>Magenta en un lado de la cara, lima en el otro: luz partida de colores complementarios.</dd>
+      <dt>SFX</dt><dd>«Ding dong» fuerte. No se promete tiempo de entrega: es un corte cómico.</dd>
+    </dl>
+    <div class="chips"><span class="chip"><i style="background:var(--pink)"></i>Magenta</span><span class="chip"><i style="background:var(--lime)"></i>Lima</span></div>
+    <div class="refs">
+      <figure><img src="refs/e06_crash-zoom.jpg" alt=""><figcaption>EyeCannndy · Zoom</figcaption></figure>
+      <figure><img src="refs/r06_ojos-magenta.jpg" alt=""><figcaption>Ojos con luz magenta</figcaption></figure>
+      <figure><img src="refs/r06b_ojos-sorpresa-azul.jpg" alt=""><figcaption>Sorpresa, fondo de color</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a2">
+  <div class="col"><img class="fill" src="bocetos/b07.jpg" alt="Boceto: aparece el repartidor"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="07"><span>Cuadro generado<br><code>cuadros/07.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">7</b><b class="dur">2 s</b><h3>Llega el repartidor de Glow Up</h3> <span class="wa">Wes Anderson</span></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/central-framing" target="_blank" rel="noopener">Central Framing</a> · <a href="https://eyecannndy.com/technique/wide-shot" target="_blank" rel="noopener">Wide shot</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Lucía abre la puerta. El repartidor le entrega la bolsa de Glow Up: batido de fresa y waffles proteicos.</dd>
+      <dt>Cámara</dt><dd>Plano general frontal desde dentro de la casa, 24 mm. La puerta al centro exacto, el repartidor al centro del vano, utilería en espejo a ambos lados (dos plantas, dos cuadros). Al cerrar la puerta, whip pan de 90° hacia la sala, sin corte, que conecta con el plano 8.</dd>
+      <dt>Luz</dt><dd>Contraluz cálido de la calle; la puerta pintada de un color plano (verde Glow Up o rosa).</dd>
+      <dt>SFX</dt><dd>Puerta que se abre, bolsa de papel, ambiente de calle.</dd>
+    </dl>
+    <p class="warn">El boceto dice «Rappi aparece». Rappi es otra marca y no está aprobada: el repartidor va con uniforme y bolsa de Glow Up, o sin marca.</p>
+    <div class="chips"><span class="chip"><i style="background:var(--green)"></i>Verde Glow Up</span><span class="chip"><i style="background:#f6b34a"></i>Contraluz cálido</span></div>
+    <div class="refs">
+      <figure><img src="refs/m01_whip-pan-wes.jpg" alt=""><figcaption>EyeCannndy · Whip Pan</figcaption></figure>
+      <figure><img src="refs/m01b_whip-pan-cuarto.jpg" alt=""><figcaption>Whip pan en interior de color</figcaption></figure>
+      <figure><img src="refs/w05_puerta-azul-entrada.jpg" alt=""><figcaption>Wes Anderson · puerta al centro</figcaption></figure>
+      <figure><img src="refs/w06_puerta-teal-toca.jpg" alt=""><figcaption>Wes Anderson · alguien toca la puerta</figcaption></figure>
+      <figure><img src="refs/e07_central-framing.jpg" alt=""><figcaption>EyeCannndy · Central Framing</figcaption></figure>
+      <figure><img src="refs/r07_repartidor-pop.jpg" alt=""><figcaption>Repartidor pop en la puerta</figcaption></figure>
+      <figure><img src="refs/r07b_repartidor-bolsa.jpg" alt=""><figcaption>Entrega de bolsa</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a2">
+  <div class="col"><img class="fill" src="bocetos/b08.jpg" alt="Boceto: Lucía sentada con su pedido"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="08"><span>Cuadro generado<br><code>cuadros/08.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">8</b><b class="dur">3,5 s</b><h3>Se sienta en el centro de su sofá mostaza</h3> <span class="wa">Wes Anderson</span></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/central-framing" target="_blank" rel="noopener">Central Framing</a> · <a href="https://eyecannndy.com/technique/tableau-shots" target="_blank" rel="noopener">Tableau</a> · <a href="https://eyecannndy.com/technique/hard-light" target="_blank" rel="noopener">Hard Light</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Con la bolsa recién recibida, Lucía se deja caer en el centro de su sofá, saca el batido de fresa y los waffles proteicos y da el primer sorbo, feliz.</dd>
+      <dt>Cámara</dt><dd>Plano americano (de las rodillas para arriba), frontal y simétrico, 35 mm a la altura del pecho. Trucking lateral: la cámara acompaña a Lucía de lado mientras cruza la sala y se detiene en seco cuando ella queda exactamente al centro del sofá. Luego inserto cenital (overhead) de la mesa de centro: batido de fresa, waffles y la bolsa de Glow Up en orden simétrico.</dd>
+      <dt>Arte</dt><dd>Sofá mostaza, del mismo color que sus zapatillas, sobre una pared rosa fresa. Dos lámparas iguales y dos cojines iguales en espejo; mesa de centro baja con la bolsa de Glow Up.</dd>
+      <dt>Luz</dt><dd>Luz dura frontal un poco alta, sombras limpias detrás del sofá, contraluz lima suave en el pelo.</dd>
+      <dt>SFX</dt><dd>Cojín del sillón, bolsa de papel, sorbo largo de pajita.</dd>
+    </dl>
+    <div class="chips"><span class="chip"><i style="background:#d9a21b"></i>Sofá mostaza</span><span class="chip"><i style="background:var(--pink)"></i>Pared rosa fresa</span><span class="chip"><i style="background:var(--lime)"></i>Contraluz lima</span></div>
+    <div class="refs">
+      <figure><img src="refs/m02_trucking-lateral.jpg" alt=""><figcaption>EyeCannndy · Trucking lateral</figcaption></figure>
+      <figure><img src="refs/m03_overhead-rosa.jpg" alt=""><figcaption>EyeCannndy · Overhead (inserto)</figcaption></figure>
+      <figure><img src="refs/w01_sofa-amarillo-centro.jpg" alt=""><figcaption>Wes Anderson · sofá amarillo al centro</figcaption></figure>
+      <figure><img src="refs/w02_sofa-amarillo-hombre.jpg" alt=""><figcaption>Sofá amarillo, plano frontal</figcaption></figure>
+      <figure><img src="refs/w03_pareja-centrada.jpg" alt=""><figcaption>Encuadre frontal centrado</figcaption></figure>
+      <figure><img src="refs/r08_sala-sofa-simetrica.jpg" alt=""><figcaption>Sala simétrica, sentada al centro</figcaption></figure>
+      </div>
+  </div>
+</article>
+
+<!-- ============ ACTO 3 ============ -->
+<h2><i style="background:var(--violet)"></i>Acto 3 · El giro al negocio (11 s)</h2>
+<p class="sub">El plano de Lucía se encoge y se vuelve un cuadro entre cuatro. Aquí el anuncio le habla a quien compra los imanes.</p>
+
+<article class="shot a3">
+  <div class="col"><img class="fill" src="bocetos/b09.jpg" alt="Boceto: pantalla dividida con Lucía, heladería, gas y frutería"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="09"><span>Cuadro generado<br><code>cuadros/09.jpg</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">9</b><b class="dur">5 s</b><h3>Cuatro negocios, el mismo imán</h3> <span class="wa">Wes Anderson</span></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/split-screen" target="_blank" rel="noopener">Split Screen</a> · <a href="https://eyecannndy.com/technique/match-split" target="_blank" rel="noopener">Match Split</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Lucía sigue tomando su batido. En los otros cuadros, cada dueño le entrega su imán a un cliente: heladería, gas, frutería. Entran uno por uno.</dd>
+      <dt>Cámara</dt><dd>Pantalla dividida 2 × 2. Los cuatro cuadros planimétricos: cada dueño al centro, frontal, con su local de fondo en simetría. Mismo encuadre en los cuatro para que se lean como una serie.</dd>
+      <dt>Luz</dt><dd>Cada negocio con su color dominante de fondo: rosa, violeta, naranja, verde. Luz dura igual en los cuatro.</dd>
+      <dt>Texto</dt><dd>En pantalla: «¿Y si ese imán fuera el de tu negocio?»</dd>
+      <dt>SFX</dt><dd>Un «clic» magnético por cada cuadro que entra.</dd>
+    </dl>
+    <div class="refs">
+      <figure><img src="refs/e09_split-screen.jpg" alt=""><figcaption>EyeCannndy · Split Screen</figcaption></figure>
+      <figure><img src="refs/r09_split-rostros.jpg" alt=""><figcaption>Grilla de rostros, mismo encuadre</figcaption></figure>
+      <figure><img src="refs/r09b_grid-repetido.jpg" alt=""><figcaption>Grilla de color repetida</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a3">
+  <div class="col"><img class="fill" src="bocetos/b10.jpg" alt="Boceto: primer plano final del imán"><span class="tag">Boceto</span></div>
+  <div class="col gen" data-frame="10"><span>Cuadro generado<br><code>cuadros/10.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">10</b><b class="dur">3 s</b><h3>El imán que puede ser tuyo</h3></div>
+    <dl>
+      <dt>Técnica</dt><dd><a href="https://eyecannndy.com/technique/product" target="_blank" rel="noopener">Product</a> · <a href="https://eyecannndy.com/technique/hard-light" target="_blank" rel="noopener">Hard Light</a> <span style="color:var(--muted);font-size:12.5px">(EyeCannndy)</span></dd>
+      <dt>Acción</dt><dd>Primer plano del imán. El logo cambia: Glow Up, heladería, gas, frutería y al final «Tu marca aquí».</dd>
+      <dt>Cámara</dt><dd>Cenital (overhead) del imán al centro sobre fondo de color, 100 mm. Cada cambio de logo con un tilt seco o un corte en el mismo encuadre.</dd>
+      <dt>Luz</dt><dd>Fondo de color sólido (verde Glow Up), una sola luz dura con sombra marcada. Estilo foto de producto.</dd>
+      <dt>Texto</dt><dd>En pantalla: «Tus clientes piden con un toque. Tú ves cada pedido.»</dd>
+      <dt>SFX</dt><dd>Chasquido magnético al cambiar cada logo.</dd>
+    </dl>
+    <div class="refs">
+      <figure><img src="refs/m03_overhead-rosa.jpg" alt=""><figcaption>EyeCannndy · Overhead</figcaption></figure>
+      <figure><img src="refs/e10_product.jpg" alt=""><figcaption>EyeCannndy · Product</figcaption></figure>
+      <figure><img src="refs/r10_producto-fondo-rojo.jpg" alt=""><figcaption>Producto, fondo de color, luz dura</figcaption></figure>
+      <figure><img src="refs/r10b_producto-teal.jpg" alt=""><figcaption>Objeto solo sobre fondo plano</figcaption></figure>
+      <figure><img src="capturas/00_iman-fisico.webp" alt=""><figcaption>Imán real de Glow Up</figcaption></figure>
+    </div>
+  </div>
+</article>
+
+<article class="shot a3">
+  <div class="col gen"><span>Placa final</span></div>
+  <div class="col gen" data-frame="11"><span>Cuadro generado<br><code>cuadros/11.png</code></span></div>
+  <div class="col txt">
+    <div class="head"><b class="num">11</b><b class="dur">3 s</b><h3>Placa final</h3> <span class="wa">Wes Anderson</span></div>
+    <dl>
+      <dt>Texto</dt><dd>«Imanes NFC con tu marca. Desde 50 piezas. Nosotros armamos todo el sistema.» Botón de WhatsApp y logo.</dd>
+      <dt>Arte</dt><dd>Fondo verde Glow Up, texto en lima centrado y simétrico, el imán al centro.</dd>
+      <dt>SFX</dt><dd>Sonido de mensaje enviado al aparecer el botón de WhatsApp.</dd>
+    </dl>
+  </div>
+</article>
+
+<section class="notes">
+  <h2>Pendientes antes de grabar</h2>
+  <ul>
+    <li>Definir si el repartidor lleva uniforme de Glow Up o va sin marca.</li>
+    <li>Nombre y logo de tu marca para la placa final.</li>
+    <li>El paso a WhatsApp dentro del pedido aún no está activo: no se muestra en el acto 2.</li>
+    <li>Ojo de pez: se puede grabar con lente 8 mm o con un celular con gran angular pegado a la pantalla; probar las dos.</li>
+  </ul>
+  <h2 style="margin-top:28px">Flujo real capturado</h2>
+  <p class="sub">Registro de una sola vez (no entra en el comercial) y pedido.</p>
+  <div class="strip">
+    <figure><img src="capturas/01_iman-detectado.jpg" alt=""><figcaption>Imán detectado</figcaption></figure>
+    <figure><img src="capturas/02_nombre.jpg" alt=""><figcaption>Nombre</figcaption></figure>
+    <figure><img src="capturas/04_direccion.jpg" alt=""><figcaption>Dirección</figcaption></figure>
+    <figure><img src="capturas/05_resumen.jpg" alt=""><figcaption>Resumen</figcaption></figure>
+    <figure><img src="capturas/06_menu.jpg" alt=""><figcaption>Menú</figcaption></figure>
+    <figure><img src="capturas/07_agregado.jpg" alt=""><figcaption>Agregado</figcaption></figure>
+    <figure><img src="capturas/08_mi-pedido.jpg" alt=""><figcaption>Mi pedido</figcaption></figure>
+    <figure><img src="capturas/09_pedido-recibido.jpg" alt=""><figcaption>Recibido</figcaption></figure>
+  </div>
+  <h2 style="margin-top:28px">Bocetos originales</h2>
+  <div class="strip">
+    <figure><img src="bocetos/cuaderno_pag1.webp" alt=""><figcaption>Cuaderno, página 1</figcaption></figure>
+    <figure><img src="bocetos/cuaderno_pag2.webp" alt=""><figcaption>Cuaderno, página 2</figcaption></figure>
+  </div>
+</section>
+
+</main>
+<script>
+  // Si existe cuadros/NN.png (o .jpg), lo muestra en la columna «Cuadro generado».
+  document.querySelectorAll('.gen[data-frame]').forEach(function(f){
+    var n=f.dataset.frame, exts=['png','jpg','jpeg','webp'], i=0;
+    (function next(){
+      if(i>=exts.length) return;
+      var im=new Image();
+      im.onload=function(){ f.classList.add('has'); f.innerHTML=''; f.appendChild(im); var t=document.createElement('span'); t.className='tag'; t.textContent='Generado'; f.appendChild(t); };
+      im.onerror=function(){ i++; next(); };
+      im.alt='Cuadro generado del plano '+n; im.src='cuadros/'+n+'.'+exts[i];
+    })();
+  });
+</script>
+</body>
+</html>
