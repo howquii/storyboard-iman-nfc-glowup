@@ -6,6 +6,7 @@ Comercial vertical (9:16, ~30 s) del imán NFC para refrigerador, con el demo de
 
 ## Contenido
 - `index.html` — storyboard completo: 11 planos con boceto, cuadro generado, cámara, luz, SFX y referencias.
+- `imanes/` — 10 diseños de imán NFC (7 × 9 cm) para negocios locales de pedidos y reservas.
 - `cuadros/` — cuadros generados con IA (Nano Banana 2.1) para cada plano.
 - `bocetos/` — bocetos originales del cuaderno.
 - `personaje/` — Lucía, la protagonista, y su hoja de personaje.
